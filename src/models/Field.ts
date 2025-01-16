@@ -1,4 +1,4 @@
-export class field{
+export class Field{
     fieldCode: string;
     fieldName: string;
     fieldLocation: string;
