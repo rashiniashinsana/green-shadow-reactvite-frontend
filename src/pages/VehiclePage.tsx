@@ -114,7 +114,7 @@ export function VehiclePage() {
     return (
         <>
             <header>
-                <h2 className="font-sans text-4xl mb-6 text-transparent bg-clip-text bg-gradient-to-r to-cyan-200 from-lime-700">Vehicle
+                <h2 className="font-sans text-4xl text-lime-700 mb-6">Vehicle
                     Management</h2>
             </header>
 
