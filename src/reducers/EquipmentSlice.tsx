@@ -18,8 +18,8 @@ const equipmentSlice = createSlice({
             if(index !== -1){
                 state[index] = action.payload;
             }
-        }
-    }
+        },
+    },
 });
 
 export const {addEquipment, deleteEquipment,updateEquipment} = equipmentSlice.actions;
