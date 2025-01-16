@@ -1,5 +1,6 @@
+
 // @ts-ignore
-import {CropPage} from "../pages/CropPage.tsx";
+import {Crop} from './/src/models/Crop.ts';
 import {createSlice} from '@reduxjs/toolkit';
 
 export const initialState= [];
@@ -20,9 +21,9 @@ const cropSlice  = createSlice({
             if (index !== -1) {
                 state[index] = action.payload;
             }
-        }
-    }
-})
+        },
+    },
+});
 
 export const {addCrop, updateCrop, deleteCrop} = cropSlice.actions;
 export default cropSlice.reducer;
