@@ -3,8 +3,6 @@ import { useState } from "react";
 import { Crop } from "../models/Crop.ts";
 import { addCrop, updateCrop, deleteCrop } from "../reducers/CropSlice.tsx";
 import { useDispatch, useSelector } from "react-redux";
-import {CropInputComponent} from "../components/crop/CropInputComponent.tsx";
-import {CropTableComponent} from "../components/crop/CropTableComponent.tsx";
 
 export function CropPage() {
     const navigate = useNavigate();
@@ -102,7 +100,7 @@ export function CropPage() {
     return (
         <>
             <header>
-                <h2 className="font-sans text-4xl  mb-6 text-transparent bg-clip-text bg-gradient-to-r to-cyan-200 from-lime-700">Crop Management</h2>
+                <h2 className="font-sans text-4xl text-lime-700 mb-6">Crop Management</h2>
             </header>
 
             <button
@@ -318,6 +316,7 @@ export function CropPage() {
                     </div>
                 </div>
             )}
+
             {/* Crop View CropInputComponent */}
             {showViewModal && (
                 <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
