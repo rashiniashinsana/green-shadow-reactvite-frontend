@@ -5,6 +5,7 @@ import FieldSlice from "../reducers/FieldSlice.tsx";
 import StaffSlice from "../reducers/StaffSlice.tsx";
 import VehicleSlice from "../reducers/VehicleSlice.tsx";
 import userSlice from "../reducers/UserSlice.tsx";
+import LogSlice from "../reducers/LogSlice.ts";
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
         equipment: EquipmentSlice,
         vehicle: VehicleSlice,
         staff: StaffSlice,
+        log: LogSlice,
     },
 });
 
