@@ -1,21 +1,30 @@
-export class Field{
+export class Field {
     fieldCode: string;
     fieldName: string;
-    fieldLocation: string;
-    fieldSize:string;
-    image1:string;
-    image2:string;
-    staffId:string;
+    fieldSize: string;
+    fieldImage1: File | null;
+    fieldImage2: File | null;
+    location: {
+        latitude: number;
+        longitude: number;
+    };
+    assignStaffs: string[];
 
-
-    constructor(fieldCode: string,fieldName: string, fieldLocation: string,fieldSize:string,image1:string,image2:string,staffId:string) {
+    constructor(
+        fieldCode: string,
+        fieldName: string,
+        fieldSize: string,
+        fieldImage1: File | null = null,
+        fieldImage2: File | null = null,
+        location: { latitude: number; longitude: number },
+        assignStaffs: string[] = []
+    ) {
         this.fieldCode = fieldCode;
         this.fieldName = fieldName;
-        this.fieldLocation = fieldLocation;
         this.fieldSize = fieldSize;
-        this.image1 = image1;
-        this.image2 = image2;
-        this.staffId = staffId;
-
+        this.fieldImage1 = fieldImage1;
+        this.fieldImage2 = fieldImage2;
+        this.location = location;
+        this.assignStaffs = assignStaffs;
     }
 }
