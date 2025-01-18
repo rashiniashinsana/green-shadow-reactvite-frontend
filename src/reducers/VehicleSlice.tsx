@@ -7,20 +7,24 @@ const vehicleSlice = createSlice({
     name: 'vehicle',
     initialState,
     reducers: {
-        addVehicle: (state, action) => {
+        saveVehicle: (state, action) => {
+            // @ts-ignore
             state.push(action.payload);
         },
         deleteVehicle: (state, action) => {
-            return state.filter(vehicle => vehicle.vehicleCode !== action.payload);
+            // @ts-ignore
+            return state.filter(vehicle => !(vehicle.vehicleCode === action.payload));
         },
         updateVehicle: (state, action) => {
+            // @ts-ignore
             const index = state.findIndex(vehicle => vehicle.vehicleCode === action.payload.vehicleCode);
-            if (index > -1) {
+            if (index !== -1) {
+                // @ts-ignore
                 state[index] = action.payload;
             }
         },
     },
 });
 
-export const { addVehicle, deleteVehicle, updateVehicle } = vehicleSlice.actions;
+export const { saveVehicle, deleteVehicle, updateVehicle } = vehicleSlice.actions;
 export default vehicleSlice.reducer;
