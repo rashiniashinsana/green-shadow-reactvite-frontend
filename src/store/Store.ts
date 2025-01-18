@@ -4,9 +4,11 @@ import EquipmentSlice from "../reducers/EquipmentSlice.tsx";
 import FieldSlice from "../reducers/FieldSlice.tsx";
 import StaffSlice from "../reducers/StaffSlice.tsx";
 import VehicleSlice from "../reducers/VehicleSlice.tsx";
+import userSlice from "../reducers/UserSlice.tsx";
 
 const store = configureStore({
     reducer: {
+        user: userSlice,
         field: FieldSlice,
         crop: CropSlice,
         equipment: EquipmentSlice,
