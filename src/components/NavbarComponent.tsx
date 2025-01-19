@@ -2,7 +2,8 @@
 import {Link} from "react-router";
 
 
-export function Navigation() {
+export function NavbarComponent() {
+
     return (
         <>
             <header className=" bg-gradient-to-r from-green-600 to-emerald-300 shadow-lg w-56 fixed h-screen">
