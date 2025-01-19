@@ -1,17 +1,15 @@
 import './App.css'
-import {createBrowserRouter, RouterProvider} from "react-router";
-import {Dashboard} from "./pages/Dashboard";
-
-import {RootLayout} from "./components/RootLayout";
-import {CropPage} from "./pages/CropPage.tsx";
-import {EquipmentPage} from "./pages/EquipmentPage.tsx";
-import {StaffPage} from "./pages/StaffPage.tsx";
-import {VehiclePage} from "./pages/VehiclePage.tsx";
-import {FieldPage} from "./pages/FieldPage.tsx";
+// import {ToastContainer} from "react-toastify";
+import { createBrowserRouter, RouterProvider} from "react-router";
+import {RootLayout} from "./components/RootLayout.tsx";
+import {Dashboard} from "./pages/Dashboard.tsx";
+import CropWall from "./components/Wall/CropWall.tsx";
 import {NotFoundPage} from "./pages/NotFoundPage.tsx";
-// @ts-ignore
-import React from "react";
-
+import StaffWall from "./components/Wall/StaffWall.tsx";
+import VehicleWall from "./components/Wall/VehicleWall.tsx";
+import FieldWall from "./components/Wall/FieldWall.tsx";
+import EquipmentWall from "./components/Wall/EquipmentWall.tsx";
+import CropDataWall from "./components/Wall/CropDataWall.tsx";
 
 function App() {
 
@@ -21,11 +19,12 @@ function App() {
             element: <RootLayout/>,
             children: [
                 {path: '', element: <Dashboard/>},
-                {path: '/field', element:<FieldPage/>},
-                {path: '/crop', element: <CropPage/>},
-                {path: '/equipment', element: <EquipmentPage/>},
-                {path: '/vehicle',element:<VehiclePage/>},
-                {path: '/staff',element: <StaffPage/>},
+                {path: '/field', element:<FieldWall/>},
+                {path: '/crop', element: <CropWall/>},
+                {path: '/equipment', element: <EquipmentWall/>},
+                {path: '/vehicle',element:<VehicleWall/>},
+                {path: '/staff',element: <StaffWall/>},
+                {path: '/cropdetails',element: <CropDataWall/>}
             ]
         },
         {
@@ -36,8 +35,29 @@ function App() {
 
     return (
         <>
-            <RouterProvider router={routes}/>
+            <>
+                <RouterProvider router={routes}/>
 
+            </>
+
+            {/*<ToastContainer />*/}
+            {/*<BrowserRouter>*/}
+            {/*    <Routes>*/}
+            {/*        /!*<Route path="/" element={<LoginPage/>} />*!/*/}
+            {/*        /!*<Route path="/register" element={<RegisterPage />} />*!/*/}
+
+            {/*        <Route path="/dashboard" element={ <RootLayout /> } >*/}
+            {/*            <Route path="home" element={ <Dashboard /> } />*/}
+            {/*            <Route path="staff_management" element={ <StaffWall /> } />*/}
+            {/*            <Route path="vehicle_management" element={ <VehicleWall /> } />*/}
+            {/*            <Route path="field_management" element={ <FieldWall /> } />*/}
+            {/*            <Route path="equ_management" element={ <EquipmentWall /> } />*/}
+            {/*            <Route path="crop_management" element={ <CropWall /> } />*/}
+            {/*            <Route path="monitor_log" element={ <CropDataWall /> } />*/}
+            {/*            <Route path="*" element={ <NotFoundPage /> } />*/}
+            {/*        </Route>*/}
+            {/*    </Routes>*/}
+            {/*</BrowserRouter>*/}
         </>
     );
 }
