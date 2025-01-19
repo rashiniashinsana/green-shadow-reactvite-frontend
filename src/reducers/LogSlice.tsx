@@ -1,7 +1,16 @@
 import {Log} from "../models/Log";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-const initialState : Log[] = []
+const initialState : Log[] = [{
+    logCode: "LOG001",
+    logDate: "2021-10-01",
+    observedImage: null,
+    logDetail: "Log Detail",
+    fieldCodes: ["FLD001"],
+    cropCodes: ["CRP001"],
+    staffIds: ["STF001"]
+
+}]
 
 const LogSlice = createSlice({
     name: 'log',
@@ -10,7 +19,7 @@ const LogSlice = createSlice({
         addLog: (state, action: PayloadAction<Log>) => {
             state.push(action.payload);
         },
-        removeLog: (state, action: PayloadAction<string>) => {
+        deleteLog: (state, action: PayloadAction<string>) => {
             return state.filter((log) => log.logCode !== action.payload);
         },
         updateLog: (state, action: PayloadAction<Log>) => {
@@ -20,5 +29,5 @@ const LogSlice = createSlice({
     }
 })
 
-export const {addLog, removeLog, updateLog} = LogSlice.actions;
+export const {addLog, deleteLog, updateLog} = LogSlice.actions;
 export default LogSlice.reducer;
