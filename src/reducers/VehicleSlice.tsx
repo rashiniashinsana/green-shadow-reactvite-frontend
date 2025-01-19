@@ -1,30 +1,35 @@
-// @ts-ignore
-import { createSlice } from "@reduxjs/toolkit";
+import {Vehicle} from "../models/Vehicle";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-export const initialState = [];
+const initialState: Vehicle[] = [
+    {
+        vehicleCode: "VHL001",
+        licensePlateNumber: "WP-1234",
+        vehicleCategory: "Lorry",
+        fuelType: "Diesel",
+        remarks: "Good Condition",
+        staffId: "STF001",
+    }
+]
 
 const vehicleSlice = createSlice({
     name: 'vehicle',
     initialState,
     reducers: {
         saveVehicle: (state, action) => {
-            // @ts-ignore
             state.push(action.payload);
         },
-        deleteVehicle: (state, action) => {
-            // @ts-ignore
-            return state.filter(vehicle => !(vehicle.vehicleCode === action.payload));
-        },
         updateVehicle: (state, action) => {
-            // @ts-ignore
-            const index = state.findIndex(vehicle => vehicle.vehicleCode === action.payload.vehicleCode);
-            if (index !== -1) {
-                // @ts-ignore
-                state[index] = action.payload;
-            }
+            return state.map((vehicle: Vehicle) => vehicle.vehicleCode === action.payload.vehicleCode
+                ? action.payload
+                : vehicle
+            );
         },
-    },
-});
+        deleteVehicle: (state, action : PayloadAction<string>) => {
+            return state.filter((vehicle: Vehicle) => vehicle.vehicleCode !== action.payload );
+        }
+    }
+})
 
-export const { saveVehicle, deleteVehicle, updateVehicle } = vehicleSlice.actions;
+export const {saveVehicle, updateVehicle, deleteVehicle} = vehicleSlice.actions;
 export default vehicleSlice.reducer;
