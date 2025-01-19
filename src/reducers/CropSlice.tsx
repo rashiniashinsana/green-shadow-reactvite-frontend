@@ -1,9 +1,16 @@
-
-// @ts-ignore
-import {Crop} from './/src/models/Crop.ts';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {Crop} from "../models/Crop.ts";
 
-export const initialState : Crop[] = [];
+export const initialState : Crop[] = [{
+    cropCode: 'CRP001',
+    cropName: 'Rice',
+    cropScientificName: 'Oryza sativa',
+    cropSeason: 'Kharif',
+    cropType: 'Cereal',
+    cropImage: null,
+    fieldCode: 'FLD001',
+
+}];
 
 const cropSlice  = createSlice({
     name: 'crop',

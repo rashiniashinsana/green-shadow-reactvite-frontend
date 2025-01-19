@@ -1,19 +1,19 @@
 export class Crop {
     cropCode: string;
-    cropCommonName: string;
+    cropName: string;
     cropScientificName: string;
-    cropImage: File |null;
-    category : string;
     cropSeason: string;
+    cropType: string;
+    cropImage: File | null;
     fieldCode: string;
 
-    constructor(cropCode: string, cropCommonName: string, cropScientificName: string,cropImage: File,category:string,cropSeason:string,fieldCode:string) {
+    constructor(cropCode: string, cropName: string, cropScientificName: string, cropSeason: string, cropType: string, cropImage: File | null, fieldCode: string) {
         this.cropCode = cropCode;
-        this.cropCommonName = cropCommonName;
+        this.cropName = cropName;
         this.cropScientificName = cropScientificName;
-        this.cropImage = cropImage;
-        this.category = category;
         this.cropSeason = cropSeason;
+        this.cropType = cropType;
+        this.cropImage = cropImage;
         this.fieldCode = fieldCode;
     }
 }
