@@ -1,13 +1,13 @@
 import { Outlet } from "react-router";
-import { Navigation } from "./Navigation";
+import { NavbarComponent } from "./NavbarComponent.tsx";
 
 export function RootLayout() {
     return (
         <>
             <div className="grid grid-cols-[250px_auto] min-h-screen">
-                {/* Header (Navigation) */}
+                {/* Header (NavbarComponent) */}
                 <header className=''>
-                    <Navigation />
+                    <NavbarComponent />
                 </header>
 
                 {/* Main Content */}
