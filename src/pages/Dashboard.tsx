@@ -1,5 +1,4 @@
 import {useSelector} from "react-redux";
-import {Crop} from "../models/Crop.ts";
 
 export function Dashboard() {
 
@@ -8,11 +7,7 @@ export function Dashboard() {
 
     return (
         <>
-            Dashboard
-            {crops.map((crops: Crop) => (
-                <div key={crops.cropCode}>{crops.cropCommonName + ' ' + crops.cropScientificName + ' ' + crops.cropImage + ' '  + crops.category + ' ' + crops.cropSeason + ' ' + crops.fieldCode + ' ' }</div>))}
-
-
+            <header><h6>Dashboard</h6></header>
         </>
     );
 }
