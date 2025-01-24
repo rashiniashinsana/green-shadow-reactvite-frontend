@@ -1,0 +1,290 @@
+/* Container for the Sign In Page */
+.signInContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f3f4f6;
+}
+
+/* Box Styling */
+.boxContainer {
+    display: flex;
+    max-width: 900px;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.infoSection {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    position: relative; /* Needed for positioning the pseudo-element */
+    height: 500px;
+    width: 100%;
+    overflow: hidden; /* Prevent the pseudo-element from overflowing */
+}
+
+.infoSection::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('../assets/logowithoutbg.png') no-repeat center center;
+    background-size: contain;
+    opacity: 0.5; /* Adjust this value for desired transparency */
+    z-index: 0; /* Ensure it stays behind the content */
+}
+
+.infoSection * {
+    position: relative; /* Keeps the text content above the background */
+    z-index: 1; /* Stacks content above the pseudo-element */
+}
+
+/* Welcome Title at the top */
+.welcomeTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #34a853;
+    margin-bottom: 10px; /* Add spacing below the title */
+}
+
+/* Company Name below the Welcome Title */
+.companyName {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #34a853;
+    margin-bottom: 20px; /* Space between company name and tagline */
+}
+
+/* Tagline below the Company Name */
+.tagline {
+    font-size: 1rem;
+    font-style: italic;
+    margin-bottom: 80px; /* Add spacing below the tagline */
+    color: #555; /* Optional: Softer text color for contrast */
+}
+
+/* Logo below the tagline (if needed) */
+.companyLogo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px; /* Optional: Space below the logo */
+}
+
+/* Information text (if needed) */
+.infoText {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-top: 20px;
+    color: #333; /* Optional: Darker color for better readability */
+}
+
+/* Form Section */
+.formSection {
+    flex: 1;
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.formTitle {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Input Fields */
+.form-label {
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 5px;
+}
+
+/* Input Box Styling */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+}
+
+/* Input Focus Effect */
+.form-control:focus {
+    border-color: #34a853;
+    outline: none;
+    box-shadow: 0 0 3px rgba(52, 168, 83, 0.5);
+}
+
+/* Hover Effect */
+.form-control:hover {
+    border: 1px solid #ccc; /* Slight border change on hover */
+    background: #fefefe;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Disabled Input */
+.form-control:disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    border: 1px solid #ddd;
+    cursor: not-allowed;
+}
+
+/* Error State */
+.form-control.error {
+    border-color: #dc3545; /* Red border for error */
+    background: #fef2f2; /* Light red background */
+}
+
+.form-control.error:focus {
+    border-color: #dc3545;
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Success State */
+.form-control.success {
+    border-color: #28a745; /* Green border for success */
+    background: #f2fcf4; /* Light green background */
+}
+
+.form-control.success:focus {
+    border-color: #28a745;
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Checkbox */
+.form-check-input {
+    margin-right: 10px;
+}
+
+#checkBox-label {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Button Container */
+.topButtons {
+    /*display: flex;*/
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin-left: 30px;
+}
+
+/* General Button Styling */
+.topButtons .btn {
+    margin-left: 5px;
+    padding: 5px 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+/* Secondary Button */
+.btn-outline-secondary {
+    color: #6c757d;
+    background-color: #f9f9f9;
+    border: 2px solid #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    color: #fff;
+    background-color: #6c757d;
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.2);
+}
+
+/* Success Buttons */
+.btn-outline-success {
+    color: #28a745;
+    background-color: #f9f9f9;
+    border: 2px solid #28a745;
+}
+
+.btn-outline-success:hover {
+    color: #fff;
+    background-color: #28a745;
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);
+}
+
+/* Active State */
+.btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Focus State */
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.3);
+}
+
+/* Sign In Button */
+.btn-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.signIn-btn {
+    width: 100%; /* Full width button */
+    padding: 15px; /* Height of the button */
+    font-size: 1rem; /* Font size */
+    font-weight: bold; /* Bold text */
+    background-color: #2c8f3c; /* Match the green color from the image */
+    color: white; /* Text color */
+    border: none; /* Remove borders */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.signIn-btn:hover {
+    background-color: #24872e; /* Slightly darker green on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* More prominent shadow on hover */
+}
+
+/* Links */
+.text-green-600 {
+    color: #28a745;
+    text-decoration: underline;
+}
+
+.text-link {
+    text-decoration: none;
+    color: #28a745;
+}
+
+.text-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .boxContainer {
+        flex-direction: column;
+        width: 90%;
+    }
+
+    .infoSection,
+    .formSection {
+        flex: none;
+        width: 100%;
+        padding: 20px;
+    }
+}
