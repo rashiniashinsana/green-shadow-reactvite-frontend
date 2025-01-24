@@ -5,7 +5,7 @@ const validateCrop = (
     cropScientificName: string,
     cropSeason: string,
     cropType: string,
-    image: File | null
+    image: File | null,
 ) => {
     const alphaRegex = /^[a-zA-Z\s]+$/;
     const alphaNumericRegex = /^[a-zA-Z0-9\s]+$/;

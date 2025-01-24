@@ -9,15 +9,9 @@ interface FieldCardProps {
     handleDeleteField: (id: string) => void;
 }
 
-const FieldCard = ({
-                       fieldData,
-                       handleUpdateFieldPopup,
-                       handleDeleteField,
-                       handleViewFieldPopup,
-                   }: FieldCardProps) => {
+const FieldCard = ({fieldData, handleUpdateFieldPopup, handleDeleteField, handleViewFieldPopup,}: FieldCardProps) => {
     return (
         <div className="p-4 bg-white shadow-lg rounded-lg">
-            {/* Image */}
             <div className="w-full overflow-hidden rounded-lg">
                 <img
                     className="w-full h-48 object-cover"
@@ -30,7 +24,6 @@ const FieldCard = ({
                 />
             </div>
 
-            {/* Details */}
             <div className="mt-4 flex justify-between">
                 <div>
                     <h3 className="text-sm font-medium text-gray-500">Field Code</h3>
@@ -53,25 +46,23 @@ const FieldCard = ({
                         {dataRefactor(fieldData.fieldName, 15)}
                     </h2>
                 </div>
-                {/* Actions */}
                 <div className="flex space-x-4">
                     <button
                         onClick={() => handleUpdateFieldPopup(fieldData)}
-                        className="text-gray-500 hover:text-gray-800"
-                    >
-                        <PencilIcon className="w-6 h-6" />
+                        className="text-gray-500 hover:text-gray-800">
+                        <PencilIcon className="w-6 h-6 text-gray-500 hover:text-blue-500" />
                     </button>
+
                     <button
                         onClick={() => handleDeleteField(fieldData.fieldCode)}
-                        className="text-gray-500 hover:text-gray-800"
-                    >
-                        <TrashIcon className="w-6 h-6" />
+                        className="text-gray-500 hover:text-gray-800">
+                        <TrashIcon className="w-6 h-6 text-gray-500 hover:text-red-500" />
                     </button>
+
                     <button
                         onClick={() => handleViewFieldPopup(fieldData)}
-                        className="text-gray-500 hover:text-gray-800"
-                    >
-                        <EyeIcon className="w-6 h-6" />
+                        className="text-gray-500 hover:text-gray-800">
+                        <EyeIcon className="w-6 h-6  text-gray-500 hover:text-yellow-200" />
                     </button>
                 </div>
             </div>

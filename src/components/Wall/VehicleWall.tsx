@@ -11,7 +11,7 @@ import HeaderComponent from "../pageheader/HeaderComponent.tsx";
 import Table from "../TableComponent.tsx";
 
 const VehicleWall = () => {
-    const dataHeaders = [ "Vehicle Code" , "License Plate Nu." , "Category" , "Fuel Type" , "Status" ]
+    const dataHeaders = [ "Vehicle Code" , "License Plate NO" , "Category" , "Fuel Type" , "Status" ]
     const [addVehiclePopup, setAddVehiclePopup] = useState(false)
     const [updateVehiclePopup, setUpdateVehiclePopup] = useState(false)
     const [viewVehiclePopup, setViewVehiclePopup] = useState(false)
@@ -68,7 +68,7 @@ const VehicleWall = () => {
     return (
         <>
             {addVehiclePopup && <AddVehiclePopup closePopupAction={handleAddVehiclePopup}/>}
-            {updateVehiclePopup && <UpdateVehiclePopup closePopupAction={handleUpdateVehiclePopup} targetStaffId={targetVehicle}/>}
+            {updateVehiclePopup && <UpdateVehiclePopup closePopupAction={handleUpdateVehiclePopup} targetVehicleCode={targetVehicle}/>}
             {viewVehiclePopup && <ViewVehiclePopup closePopupAction={handleViewVehiclePopup} targetStaffId={targetVehicle}/>}
             <div className="w-100 p-5 bg-transparent" id="staff-wall">
                 <HeaderComponent section={"Vehicle Management"} button={"Add Vehicle"} addPopupAction={handleAddVehiclePopup} searchAction={setSearch}/>

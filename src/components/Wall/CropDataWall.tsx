@@ -78,7 +78,7 @@ const CropDataWall = () => {
             {viewLogPopup && <ViewCropDetailsPopup closePopupAction={handleViewLogPopup} targetLog={targetLog} />}
             <div className="w-100 p-5 bg-transparent" id="staff-wall">
                 <HeaderComponent
-                    section={"Crop Details Management"}
+                    section={"Log Management"}
                     button={"Add Log"}
                     addPopupAction={handleSaveLogPopup}
                     searchAction={setSearch}

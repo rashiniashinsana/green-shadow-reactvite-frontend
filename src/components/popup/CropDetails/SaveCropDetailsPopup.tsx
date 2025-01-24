@@ -58,17 +58,17 @@ const SaveCropDetailsPopup = ({ closePopupAction }: SaveCropDetailsPopup) => {
         setStaffSet([...staffSet, staffId]);
     };
 
-    const removeField = (fieldCode: string) => {
-        setFieldSet(fieldSet.filter((field) => field !== fieldCode));
-    };
-
-    const removeCrop = (cropCode: string) => {
-        setCropSet(cropSet.filter((crop) => crop !== cropCode));
-    };
-
-    const removeStaff = (staffId: string) => {
-        setStaffSet(staffSet.filter((staff) => staff !== staffId));
-    };
+    // const removeField = (fieldCode: string) => {
+    //     setFieldSet(fieldSet.filter((field) => field !== fieldCode));
+    // };
+    //
+    // const removeCrop = (cropCode: string) => {
+    //     setCropSet(cropSet.filter((crop) => crop !== cropCode));
+    // };
+    //
+    // const removeStaff = (staffId: string) => {
+    //     setStaffSet(staffSet.filter((staff) => staff !== staffId));
+    // };
 
     const dispatch = useDispatch();
 
@@ -81,6 +81,7 @@ const SaveCropDetailsPopup = ({ closePopupAction }: SaveCropDetailsPopup) => {
             crop.staffIds = staffSet;
             dispatch(addLog(crop));
             toast.success("Log saved successfully.");
+            closePopupAction();
         } catch (e) {
             console.error(e);
         }
@@ -91,7 +92,7 @@ const SaveCropDetailsPopup = ({ closePopupAction }: SaveCropDetailsPopup) => {
             <div className="w-1/2 h-auto p-6 bg-white rounded-lg shadow-lg relative">
                 <button
                     className="absolute top-4 right-4 text-xl font-bold text-gray-500 hover:text-gray-800"
-                    onClick={closePopupAction}
+                    onClick={() => closePopupAction()}
                 >
                     X
                 </button>
@@ -99,11 +100,12 @@ const SaveCropDetailsPopup = ({ closePopupAction }: SaveCropDetailsPopup) => {
                 <div className="space-y-4">
                     <div>
                         <select
+                            id="floatingSelect"
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
                             name={"fieldCodes"}
                             onChange={(e) => saveField(e.target.value)}
                         >
-                            <option value="" disabled selected>None</option>
+                            <option value="" disabled selected>Select Field</option>
                             {field.map((field) => (
                                 <option key={field.fieldCode} value={field.fieldCode}>
                                     {field.fieldName}
@@ -117,7 +119,7 @@ const SaveCropDetailsPopup = ({ closePopupAction }: SaveCropDetailsPopup) => {
                             name={"cropCodes"}
                             onChange={(e) => saveCrop(e.target.value)}
                         >
-                            <option value="" disabled selected>None</option>
+                            <option value="" disabled selected>Select Crop</option>
                             {crops.map((crop) => (
                                 <option key={crop.cropCode} value={crop.cropCode}>
                                     {crop.cropName}
@@ -131,7 +133,7 @@ const SaveCropDetailsPopup = ({ closePopupAction }: SaveCropDetailsPopup) => {
                             name={"staffIds"}
                             onChange={(e) => saveStaff(e.target.value)}
                         >
-                            <option value="" disabled selected>None</option>
+                            <option value="" disabled selected>Select Staff</option>
                             {staff.map((staff) => (
                                 <option key={staff.staffId} value={staff.staffId}>
                                     {staff.firstName}
@@ -160,39 +162,39 @@ const SaveCropDetailsPopup = ({ closePopupAction }: SaveCropDetailsPopup) => {
                             <p className="text-sm text-gray-500 mt-2">Drag and drop or browse to select a file.</p>
                         </div>
                     </div>
-                    <div className="space-y-2">
-                        {fieldSet.map((fieldCode) => (
-                            <span
-                                key={fieldCode}
-                                className="cursor-pointer text-sm text-blue-600"
-                                onClick={() => removeField(fieldCode)}
-                            >
-                                {fieldCode}
-                            </span>
-                        ))}
-                    </div>
-                    <div className="space-y-2">
-                        {staffSet.map((staffId) => (
-                            <span
-                                key={staffId}
-                                className="cursor-pointer text-sm text-blue-600"
-                                onClick={() => removeStaff(staffId)}
-                            >
-                                {staffId}
-                            </span>
-                        ))}
-                    </div>
-                    <div className="space-y-2">
-                        {cropSet.map((cropCode) => (
-                            <span
-                                key={cropCode}
-                                className="cursor-pointer text-sm text-blue-600"
-                                onClick={() => removeCrop(cropCode)}
-                            >
-                                {cropCode}
-                            </span>
-                        ))}
-                    </div>
+                    {/*<div className="space-y-2">*/}
+                    {/*    {fieldSet.map((fieldCode) => (*/}
+                    {/*        <span*/}
+                    {/*            key={fieldCode}*/}
+                    {/*            className="cursor-pointer text-sm text-blue-600"*/}
+                    {/*            onClick={() => removeField(fieldCode)}*/}
+                    {/*        >*/}
+                    {/*            {fieldCode}*/}
+                    {/*        </span>*/}
+                    {/*    ))}*/}
+                    {/*</div>*/}
+                    {/*<div className="space-y-2">*/}
+                    {/*    {staffSet.map((staffId) => (*/}
+                    {/*        <span*/}
+                    {/*            key={staffId}*/}
+                    {/*            className="cursor-pointer text-sm text-blue-600"*/}
+                    {/*            onClick={() => removeStaff(staffId)}*/}
+                    {/*        >*/}
+                    {/*            {staffId}*/}
+                    {/*        </span>*/}
+                    {/*    ))}*/}
+                    {/*</div>*/}
+                    {/*<div className="space-y-2">*/}
+                    {/*    {cropSet.map((cropCode) => (*/}
+                    {/*        <span*/}
+                    {/*            key={cropCode}*/}
+                    {/*            className="cursor-pointer text-sm text-blue-600"*/}
+                    {/*            onClick={() => removeCrop(cropCode)}*/}
+                    {/*        >*/}
+                    {/*            {cropCode}*/}
+                    {/*        </span>*/}
+                    {/*    ))}*/}
+                    {/*</div>*/}
                     <button
                         type="button"
                         className="w-full p-3 bg-green-500 text-white rounded-lg hover:bg-green-600"

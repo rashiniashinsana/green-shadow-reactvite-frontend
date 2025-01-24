@@ -42,6 +42,7 @@ const UpdateCropDetailsPopup = ({ closePopupAction, targetLog }: UpdateLogPopupP
         try {
             dispatch(updateLog(staffData));
             toast.success("Log updated successfully.");
+            closePopupAction(staffData);
         } catch (e) {
             console.error(e);
         }

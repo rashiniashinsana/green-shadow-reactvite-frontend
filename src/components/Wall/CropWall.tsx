@@ -7,17 +7,17 @@ import UpdateCropPopup from "../popup/crop/UpdateCropPopup.tsx";
 import SaveCropPopup from "../popup/crop/SaveCropPopup.tsx";
 import ViewCropPopup from "../popup/crop/ViewCropPopup.tsx";
 import HeaderComponent from "../pageheader/HeaderComponent.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import { deleteCrop } from "../../reducers/CropSlice.tsx";
 import CardSet from "../CardSet.tsx";
+import {RootState} from "../../store/Store.ts";
 
 const CropWall = () => {
     const [saveCropPopup, setSaveCropPopup] = useState(false);
     const [updateCropPopup, setUpdateCropPopup] = useState(false);
     const [viewCropPopup, setViewCropPopup] = useState(false);
-    const cropData = useSelector((state: { crop: Crop[] }) => state.crop);
+    const crop = useSelector((state: RootState) => state.crop);
     const [targetCrop, setTargetCrop] = useState<Crop>({} as Crop);
-    const [crops, setCrops] = useState(cropData);
     const [search, setSearch] = useState('');
     const dispatch = useDispatch();
 
@@ -41,12 +41,12 @@ const CropWall = () => {
     };
 
     // Filtered crop data based on search, without modifying state unnecessarily
-    const filteredCropData = crops.filter((crop: Crop) =>
+    const filteredCropData = crop.filter((crop: Crop) =>
         crop.cropName.toLowerCase().includes(search.toLowerCase())
     );
 
 
-    const handeleDeleteCrop = (cropId: string) => {
+    const handleDeleteCrop = (cropId: string) => {
         Swal.fire({
             title: "Are you sure?",
             text: "Do you want to delete this crop?",
@@ -66,22 +66,15 @@ const CropWall = () => {
         });
     };
 
-    useEffect(() => {
-        const filteredCrop = cropData.filter((crop: Crop) => {
-            return crop.cropName.toLowerCase().includes(search.toLowerCase())
-        })
-        setCrops(filteredCrop)
-    }, [search, crops]);
-
 
     return (
         <>
             {saveCropPopup && <SaveCropPopup closePopupAction={handleSaveCropPopup} />}
-            {updateCropPopup && <UpdateCropPopup handleCloseUpdateCropPopup={handleUpdatePopup} targetCrop={targetCrop} />}
+            {updateCropPopup && <UpdateCropPopup CloseUpdateCropPopup={handleUpdatePopup} targetCrop={targetCrop} />}
             {viewCropPopup && <ViewCropPopup targetCrop={targetCrop} closePopupAction={handleViewCropPopup} />}
             <div className="w-100 p-5 bg-transparent" id="staff-wall">
                 <HeaderComponent section={"Crop Management"} button={"Add Crop"} addPopupAction={handleSaveCropPopup} searchAction={setSearch} />
-                <CardSet cardType={"crop"} cardSet={filteredCropData} handleUpdatePopup={handleUpdatePopup} handleViewPopup={handleViewCropPopup} handleDeletePopup={handeleDeleteCrop} />
+                <CardSet cardType={"crop"} cardSet={filteredCropData} handleUpdatePopup={handleUpdatePopup} handleViewPopup={handleViewCropPopup} handleDeletePopup={handleDeleteCrop} />
             </div>
         </>
     );

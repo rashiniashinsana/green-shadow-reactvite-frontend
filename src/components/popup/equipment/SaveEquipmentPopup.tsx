@@ -33,10 +33,11 @@ const SaveEquipmentPopup = ({ closePopupAction }: AddEquipmentPopupProps) => {
 
     const handleSave = () => {
         if (!validateEquipment(equipment.equipmentName, equipment.equipmentType)) {
-            toast.error("Please provide valid equipment details.");
             return;
         }
+        console.log(equipment);
         try {
+            console.log(equipment);
             dispatch(saveEquipment(equipment));
             toast.success("Equipment saved successfully.");
             closePopupAction();
@@ -60,21 +61,21 @@ const SaveEquipmentPopup = ({ closePopupAction }: AddEquipmentPopupProps) => {
                         <input
                             type="text"
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
-                            id="equipmentName"
-                            name="equipmentName"
+                            id="flotingInput"
+                            name={"equipmentName"}
                             placeholder="Enter Equipment Name"
                             value={equipment.equipmentName}
                             onChange={handleChange}
                         />
-                    </div>
+                        </div>
                     <div>
                         <input
                             type="text"
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
-                            id="equipmentType"
-                            name="equipmentType"
+                            id="floatingInput"
+                            name={"equipmentType"}
                             placeholder="Enter Equipment Type"
-                            value={equipment.equipmentType}
+                            defaultValue={equipment.equipmentType}
                             onChange={handleChange}
                         />
                     </div>

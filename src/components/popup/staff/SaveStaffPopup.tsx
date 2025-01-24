@@ -242,9 +242,8 @@ const SaveStaffPopup = ({ closePopupAction }: AddStaffPopupProps) => {
                 <button
                     type="button"
                     className="mt-8 w-full py-3 bg-green-500 text-white font-semibold rounded-md shadow-lg hover:bg-green-600"
-                    onClick={saveBtnAction}
-                >
-                    Save Staff Member
+                    onClick={saveBtnAction}>
+                    Save Staff
                 </button>
             </div>
         </div>

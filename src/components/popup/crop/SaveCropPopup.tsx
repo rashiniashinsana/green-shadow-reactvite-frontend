@@ -50,7 +50,6 @@ const SaveCropPopup = ({ closePopupAction }: SaveCropProps) => {
     return (
         <div className="absolute inset-0 flex justify-center items-center w-full h-auto">
             <div className="w-1/2 h-auto p-6 bg-white rounded-lg shadow-lg relative">
-                {/* Close Button */}
                 <button
                     className="absolute top-4 right-4 text-xl font-bold text-gray-500 hover:text-gray-800"
                     onClick={closePopupAction}
@@ -71,18 +70,7 @@ const SaveCropPopup = ({ closePopupAction }: SaveCropProps) => {
                         />
                     </div>
 
-                    {/* Crop Type */}
                     <div>
-                        <input
-                            type="text"
-                            className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
-                            placeholder="Enter crop type"
-                            name="cropType"
-                            onChange={handleChange}
-                        />
-                    </div>
-
-                     <div>
                         <input
                             type="text"
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
@@ -102,7 +90,33 @@ const SaveCropPopup = ({ closePopupAction }: SaveCropProps) => {
                         />
                     </div>
 
-                     <div>
+                    {/* Crop Type */}
+                    <div>
+                        <input
+                            type="text"
+                            className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
+                            placeholder="Enter crop type"
+                            name="cropType"
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="mt-3 mb-4">
+                        <label className="block text-gray-600 font-semibold mb-2">Upload Image</label>
+                        <div className="border-2 border-dashed border-gray-400 rounded-lg p-6 text-center">
+                            <input
+                                type="file"
+                                className="w-full text-center text-gray-600"
+                                name="cropImage"
+                                onChange={handleChange}
+                            />
+                            <p className="text-sm text-gray-500 mt-2">
+                                Drag and drop or browse to select a file.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
                         <select
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
                             name="assignField"
@@ -119,22 +133,8 @@ const SaveCropPopup = ({ closePopupAction }: SaveCropProps) => {
                         </select>
                     </div>
 
-                     <div className="mt-3 mb-4">
-                        <label className="block text-gray-600 font-semibold mb-2">Upload Image</label>
-                        <div className="border-2 border-dashed border-gray-400 rounded-lg p-6 text-center">
-                            <input
-                                type="file"
-                                className="w-full text-center text-gray-600"
-                                name="cropImage"
-                                onChange={handleChange}
-                            />
-                            <p className="text-sm text-gray-500 mt-2">
-                                Drag and drop or browse to select a file.
-                            </p>
-                        </div>
-                    </div>
 
-                     <button
+                    <button
                         type="button"
                         className="w-full p-3 bg-green-500 text-white rounded-lg hover:bg-green-600"
                         onClick={handleSaveCrop}

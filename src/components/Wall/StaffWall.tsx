@@ -5,10 +5,10 @@ import Swal from 'sweetalert2';
 import HeaderComponent from "../pageheader/HeaderComponent.tsx";
 import {Staff} from "../../models/Staff.ts";
 import {deleteStaff} from "../../reducers/StaffSlice.tsx";
-import UpdateStaffPopup from "../popup/staff/ViewStaffPopup.tsx";
 import AddStaffPopup from "../popup/staff/SaveStaffPopup.tsx";
 import ViewStaffPopup from "../popup/staff/ViewStaffPopup.tsx";
 import Table from "../TableComponent.tsx";
+import UpdateStaffPopup from "../popup/staff/UpdateStaffPopup.tsx";
 
 const StaffWall = () => {
     const dataHeaders = [ "Staff Id" , "First Name" , "Last Name" , "Gender" , "Contact No" ]

@@ -12,8 +12,8 @@ const initialState : Staff[] = [{
     gender: "MALE",
     contactNo: "1234567890",
     email: "John@gmail.com",
-    role: "MANAGER",
-    Address: "123, Main Street, New York"
+    Address: "123, Main Street, New York",
+    role: "MANAGER"
 }]
 
 const staffSlice = createSlice({

@@ -1,21 +1,19 @@
-import closeBtn from '../../../assets/icon/close-btn.svg'
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import validateStaffMember from "../../../util/validation/StaffValidation.ts";
-import {toast} from "react-toastify";
-import {Staff} from "../../../models/Staff.ts";
-import {updateStaff} from "../../../reducers/StaffSlice.tsx";
-import {RootState} from "../../../store/Store.ts";
+import { toast } from "react-toastify";
+import { Staff } from "../../../models/Staff.ts";
+import { updateStaff } from "../../../reducers/StaffSlice.tsx";
+import { RootState } from "../../../store/Store.ts";
 
 interface UpdateStaffPopupProps {
-    closePopupAction: (id:string) => void;
+    closePopupAction: (id: string) => void;
     targetStaffId: string;
 }
 
-const UpdateStaffPopup = ({ closePopupAction , targetStaffId } : UpdateStaffPopupProps) => {
-
-    const staff = useSelector((state: RootState) => state.staff)
-    const[staffData, setStaffData] = useState<Staff>({
+const UpdateStaffPopup = ({ closePopupAction, targetStaffId }: UpdateStaffPopupProps) => {
+    const staff = useSelector((state: RootState) => state.staff);
+    const [staffData, setStaffData] = useState<Staff>({
         staffId: "",
         firstName: "",
         lastName: "",
@@ -26,13 +24,13 @@ const UpdateStaffPopup = ({ closePopupAction , targetStaffId } : UpdateStaffPopu
         contactNo: "",
         email: "",
         role: "",
-        gender : ""
-    })
-    const dispatch = useDispatch()
+        gender: "",
+    });
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        setStaffData(staff.find((staff: Staff) => staff.staffId === targetStaffId ) as Staff)
-    }, []);
+        setStaffData(staff.find((staff: Staff) => staff.staffId === targetStaffId) as Staff);
+    }, [staff, targetStaffId]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -43,158 +41,149 @@ const UpdateStaffPopup = ({ closePopupAction , targetStaffId } : UpdateStaffPopu
     };
 
     const updateAction = () => {
-        if(!validateStaffMember(staffData)){
-            return
+        if (!validateStaffMember(staffData)) {
+            return;
         }
-        dispatch(updateStaff(staffData))
-        toast.success("Staff member updated successfully.")
-    }
+        dispatch(updateStaff(staffData));
+        toast.success("Staff member updated successfully.");
+        closePopupAction("");
+    };
 
     return (
-        <div
-            id="update-staff-popup"
-            className="position-absolute start-0 end-0 top-0 bottom-0 w-100 h-auto justify-content-center align-items-center d-flex"
-        >
-            <div className="w-75 h-auto p-4">
-                <img className="float-end" src={closeBtn} onClick={() => closePopupAction("")}/>
-                <h2 className="mt-3 mb-3">Update Staff Member</h2>
-                <div className="w-100 h-auto form-set d-grid">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white w-full max-w-3xl rounded-lg shadow-lg p-8 relative">
+                <button
+                    className="absolute top-4 right-4 text-3xl text-gray-600 hover:text-gray-900"
+                    onClick={() => closePopupAction("")}
+                >
+                    x
+                </button>
+                <h2 className="text-xl font-bold mb-6 text-gray-800">Update Staff Member</h2>
+                <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <div className="form-floating mb-3">
-                            <input
-                                type="text"
-                                className="form-control first-name-text"
-                                id="floatingInput"
-                                placeholder=""
-                                value={staffData?.firstName}
-                                name="firstName"
-                                onChange={handleChange}
-                            />
-                            <label htmlFor="floatingInput">First Name</label>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <input
-                                type="text"
-                                className="form-control last-name-text"
-                                id="floatingInput"
-                                placeholder="name@example.com"
-                                value={staffData?.lastName}
-                                name="lastName"
-                                onChange={handleChange}
-                            />
-                            <label htmlFor="floatingInput">Last Name</label>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <input
-                                type="text"
-                                className="form-control destination-text"
-                                id="floatingInput"
-                                placeholder="name@example.com"
-                                value={staffData?.designation}
-                                name="designation"
-                                onChange={handleChange}
-                            />
-                            <label htmlFor="floatingInput">Designation</label>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <input
-                                type="date"
-                                className="form-control join-date-text"
-                                id="floatingInput"
-                                placeholder="name@example.com"
-                                value={staffData?.joinDate}
-                                name="joinDate"
-                                onChange={handleChange}
-                            />
-                            <label htmlFor="floatingInput">Join Date</label>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <input
-                                type="date"
-                                className="form-control dob-text"
-                                id="floatingInput"
-                                placeholder="name@example.com"
-                                value={staffData?.dob}
-                                name="dob"
-                                onChange={handleChange}
-                            />
-                            <label htmlFor="floatingInput">Date of Birth</label>
-                        </div>
+                        <label className="block text-sm font-medium text-gray-700">First Name</label>
+                        <input
+                            type="text"
+                            name="firstName"
+                            value={staffData?.firstName}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+                            placeholder="Enter First Name"
+                        />
                     </div>
                     <div>
-                        <div className="form-floating mb-3">
-                            <select
-                                className="form-control gender-combo"
-                                id="floatingSelect"
-                                aria-label="Floating label select example"
-                                value={staffData?.gender}
-                                name="gender"
-                                onChange={handleChange}
-                            >
-                                <option value="" disabled>Select an option</option>
-                                <option value="FEMALE">FEMALE</option>
-                                <option value="MALE">MALE</option>
-                            </select>
-                            <label htmlFor="floatingSelect">Gender</label>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <input
-                                type="text"
-                                className="form-control address-text"
-                                id="floatingInput"
-                                placeholder="name@example.com"
-                                value={staffData?.Address}
-                                name="Address"
-                                onChange={handleChange}
-                            />
-                            <label htmlFor="floatingInput">Address</label>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <input
-                                type="number"
-                                className="form-control contact-text"
-                                id="floatingInput"
-                                placeholder="name@example.com"
-                                value={staffData?.contactNo}
-                                name="contactNo"
-                                onChange={handleChange}
-                            />
-                            <label htmlFor="floatingInput">Contact No.</label>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <input
-                                type="email"
-                                className="form-control email-text"
-                                id="floatingInput"
-                                placeholder="name@example.com"
-                                value={staffData?.email}
-                                name="email"
-                                onChange={handleChange}
-                            />
-                            <label htmlFor="floatingInput">Email</label>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <select
-                                className="form-control role-combo"
-                                id="floatingSelect"
-                                aria-label="Floating label select example"
-                                value={staffData?.role}
-                                name="role"
-                                onChange={handleChange}
-                            >
-                                <option value="" disabled selected>Select an option</option>
-                                <option value="MANAGER">MANAGER</option>
-                                <option value="ADMINISTRATIVE">ADMINISTRATIVE</option>
-                                <option value="SCIENTIST">SCIENTIST</option>
-                                <option value="OTHER">OTHER</option>
-                            </select>
-                            <label htmlFor="floatingSelect">Role</label>
-                        </div>
-                        <button type="button" className="btn btn-outline-success w-100" onClick={updateAction}>Update Staff Member</button>
+                        <label className="block text-sm font-medium text-gray-700">Last Name</label>
+                        <input
+                            type="text"
+                            name="lastName"
+                            value={staffData?.lastName}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+                            placeholder="Enter Last Name"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Designation</label>
+                        <input
+                            type="text"
+                            name="designation"
+                            value={staffData?.designation}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+                            placeholder="Enter Designation"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Join Date</label>
+                        <input
+                            type="date"
+                            name="joinDate"
+                            value={staffData?.joinDate}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
+                        <input
+                            type="date"
+                            name="dob"
+                            value={staffData?.dob}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Gender</label>
+                        <select
+                            name="gender"
+                            value={staffData?.gender}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+                        >
+                            <option value="" disabled>Select Gender</option>
+                            <option value="FEMALE">Female</option>
+                            <option value="MALE">Male</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Address</label>
+                        <input
+                            type="text"
+                            name="Address"
+                            value={staffData?.Address}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+                            placeholder="Enter Address"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Contact No.</label>
+                        <input
+                            type="number"
+                            name="contactNo"
+                            value={staffData?.contactNo}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+                            placeholder="Enter Contact No."
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={staffData?.email}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+                            placeholder="Enter Email"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Role</label>
+                        <select
+                            name="role"
+                            value={staffData?.role}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+                        >
+                            <option value="" disabled>Select Role</option>
+                            <option value="MANAGER">Manager</option>
+                            <option value="ADMINISTRATIVE">Administrative</option>
+                            <option value="SCIENTIST">Scientist</option>
+                            <option value="OTHER">Other</option>
+                        </select>
                     </div>
                 </div>
+                <button
+                    onClick={updateAction}
+                    className="mt-6 w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600"
+                >
+                    Update Staff Member
+                </button>
             </div>
         </div>
-    )
-}
-export default  UpdateStaffPopup;
+    );
+};
+
+export default UpdateStaffPopup;

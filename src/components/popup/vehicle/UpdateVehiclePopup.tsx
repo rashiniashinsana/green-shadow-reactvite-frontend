@@ -47,7 +47,6 @@ const UpdateVehiclePopup = ({ closePopupAction, targetVehicleCode }: UpdateVehic
         if (!vehicleValidation(vehicleData)) {
             return;
         }
-
         try {
             dispatch(updateVehicle(vehicleData));
             toast.success("Vehicle updated successfully.");
