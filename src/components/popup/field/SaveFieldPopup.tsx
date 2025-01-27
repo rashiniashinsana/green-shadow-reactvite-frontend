@@ -1,199 +1,166 @@
-import { generateUUID } from '../../../util/generateUUID.ts';
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
-import validateField from '../../../util/validation/FieldValidation.ts';
-import { Field } from '../../../models/Field.ts';
-import { saveField } from '../../../reducers/FieldSlice.tsx';
+import { useState, useEffect } from "react";
+import { generateUUID } from "../../../util/generateUUID.ts";
+import { useDispatch, useSelector } from "react-redux";
+import validateField from "../../../util/validation/FieldValidation.ts";
+import { toast } from "react-toastify";
+import { Field } from "../../../models/Field.ts";
+import { RootState } from "../../../store/Store.ts";
+import { saveField } from "../../../reducers/FieldSlice.tsx";
 
 interface SaveFieldProps {
     closePopupAction: () => void;
+    fieldToUpdate?: Field; // Optional prop for existing field data
 }
 
-const SaveField = ({ closePopupAction }: SaveFieldProps) => {
+const SaveField = ({ closePopupAction, fieldToUpdate }: SaveFieldProps) => {
     const [field, setField] = useState<Field>({
-        fieldCode: generateUUID('FIELD'),
-        fieldName: '',
-        fieldSize: '',
-        fieldImage1: null,
-        fieldImage2: null,
-        location: {
-            latitude: 0,
-            longitude: 0,
-        },
-        assignStaffs: [],
+        fieldCode: fieldToUpdate?.fieldCode || generateUUID("FIELD"),
+        fieldName: fieldToUpdate?.fieldName || "",
+        fieldSize: fieldToUpdate?.fieldSize || "",
+        fieldImage1: fieldToUpdate?.fieldImage1 || null,
+        fieldImage2: fieldToUpdate?.fieldImage2 || null,
+        location: fieldToUpdate?.location || { latitude: 0, longitude: 0 },
+        assignStaffs: fieldToUpdate?.assignStaffs || [],
     });
 
-    const [image1, setImage1] = useState<File | null>(null);
-    const [image2, setImage2] = useState<File | null>(null);
-
     const dispatch = useDispatch();
-    const mapRef = useRef<HTMLDivElement>(null);
-    const markerRef = useRef<google.maps.Marker | null>(null);
-    const [map, setMap] = useState<google.maps.Map | null>(null);
-
-    const defaultLocation = { lat: 6.0367, lng: 80.217 };
+    const staffList = useSelector((state: RootState) => state.staff); // Assuming there's a staff state
 
     useEffect(() => {
-        if (mapRef.current && !map) {
-            const googleMap = new google.maps.Map(mapRef.current, {
-                center: defaultLocation,
-                zoom: 13,
-            });
-            setMap(googleMap);
-
-            markerRef.current = new google.maps.Marker({
-                position: defaultLocation,
-                map: googleMap,
-            });
-
-            googleMap.addListener('click', (e: google.maps.MapMouseEvent) => {
-                if (e.latLng) {
-                    if (markerRef.current) {
-                        markerRef.current.setMap(null);
-                    }
-
-                    markerRef.current = new google.maps.Marker({
-                        position: e.latLng,
-                        map: googleMap,
-                    });
-
-                    setField((prev) => ({
-                        ...prev,
-                        location: {
-                            latitude: e.latLng!.lat(),
-                            longitude: e.latLng!.lng(),
-                        },
-                    }));
-                }
+        if (fieldToUpdate) {
+            setField({
+                fieldCode: fieldToUpdate.fieldCode,
+                fieldName: fieldToUpdate.fieldName,
+                fieldSize: fieldToUpdate.fieldSize,
+                fieldImage1: fieldToUpdate.fieldImage1,
+                fieldImage2: fieldToUpdate.fieldImage2,
+                location: fieldToUpdate.location,
+                assignStaffs: fieldToUpdate.assignStaffs,
             });
         }
-    }, [map]);
+    }, [JSON.stringify(fieldToUpdate)]); // Fix for deeply nested props
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value, files } = e.target;
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value, type } = e.target;
 
-        setField((prev) => {
-            if (files) {
-                return {
-                    ...prev,
-                    [name]: files[0] as File,
-                };
-            }
-            return {
+        if (type === "file" && e.target instanceof HTMLInputElement && e.target.files) {
+            const file = e.target.files[0];
+            setField((prev) => ({
+                ...prev,
+                [name]: file,
+            }));
+        } else if (name === "assignStaffs") {
+            setField((prev) => ({
+                ...prev,
+                assignStaffs: Array.isArray(prev.assignStaffs)
+                    ? [...prev.assignStaffs, value] // Add to existing array
+                    : [value], // Initialize as array if not already
+            }));
+        } else {
+            setField((prev) => ({
                 ...prev,
                 [name]: value,
-            };
-        });
+            }));
+        }
     };
 
-    const saveBtnAction = () => {
-        const { fieldName, fieldSize } = field;
-
-        if (!validateField(fieldName, fieldSize, image1 as File, image2 as File)) {
-            toast.error('Please fill all required fields correctly.');
+    const handleSaveField = () => {
+        if (!validateField(field.fieldName, field.fieldSize, field.fieldImage1, field.fieldImage2)) {
+            toast.error("Please fill all required fields correctly.");
             return;
         }
 
-        field.fieldImage1 = image1;
-        field.fieldImage2 = image2;
-
         try {
             dispatch(saveField(field));
-            toast.success('Field saved successfully');
+            toast.success("Field saved successfully.");
             closePopupAction();
-        } catch (error) {
-            console.error(error);
-            toast.error('Failed to save the field. Please try again.');
+        } catch (e) {
+            console.error(e);
+            toast.error("Failed to save field.");
         }
     };
 
     return (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-            <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-6 relative">
+        <div className="absolute inset-0 flex justify-center items-center w-full h-auto">
+            <div className="w-1/2 h-auto p-6 bg-white rounded-lg shadow-lg relative">
                 <button
-                    className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+                    className="absolute top-4 right-4 text-xl font-bold text-gray-500 hover:text-gray-800"
                     onClick={closePopupAction}
                 >
-                    &times;
+                    X
                 </button>
 
-                <h2 className="text-2xl font-bold text-center mb-6">Save Field</h2>
+                <h2 className="mt-3 mb-4 text-2xl font-semibold">Save Field</h2>
 
-                <form className="space-y-4">
+                <div className="space-y-4">
                     <div>
-                        <label htmlFor="fieldName" className="block text-sm font-medium text-gray-700 mb-2">
-                            Field Name
-                        </label>
                         <input
                             type="text"
-                            id="fieldName"
-                            name="fieldName"
+                            className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
                             placeholder="Enter field name"
+                            name="fieldName"
                             value={field.fieldName}
                             onChange={handleChange}
-                            className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
                         />
                     </div>
 
                     <div>
-                        <label htmlFor="fieldSize" className="block text-sm font-medium text-gray-700 mb-2">
-                            Field Size
-                        </label>
                         <input
                             type="number"
-                            id="fieldSize"
-                            name="fieldSize"
+                            className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
                             placeholder="Enter field size"
+                            name="fieldSize"
                             value={field.fieldSize}
                             onChange={handleChange}
-                            className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
                         />
                     </div>
 
-                    <div>
-                        <label htmlFor="fieldImage1" className="block text-sm font-medium text-gray-700 mb-2">
-                            Select Image 1
-                        </label>
+                    <div className="mt-3 mb-4">
+                        <label className="block text-gray-600 font-semibold mb-2">Upload Image 1</label>
                         <input
                             type="file"
-                            id="fieldImage1"
+                            className="w-full text-center text-gray-600"
                             name="fieldImage1"
-                            onChange={(e) => setImage1(e.target.files?.[0] || null)}
-                            className="block w-full text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring focus:ring-indigo-200"
+                            onChange={handleChange}
                         />
                     </div>
 
-                    <div>
-                        <label htmlFor="fieldImage2" className="block text-sm font-medium text-gray-700 mb-2">
-                            Select Image 2
-                        </label>
+                    <div className="mt-3 mb-4">
+                        <label className="block text-gray-600 font-semibold mb-2">Upload Image 2</label>
                         <input
                             type="file"
-                            id="fieldImage2"
+                            className="w-full text-center text-gray-600"
                             name="fieldImage2"
-                            onChange={(e) => setImage2(e.target.files?.[0] || null)}
-                            className="block w-full text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring focus:ring-indigo-200"
+                            onChange={handleChange}
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Select Field Location</label>
-                        <div
-                            id="map"
-                            ref={mapRef}
-                            className="w-full h-64 rounded-md border border-gray-300"
-                        ></div>
+                        <label className="block text-gray-600 font-semibold mb-2">Assign Staff</label>
+                        <select
+                            className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
+                            name="assignStaffs"
+                            onChange={handleChange}
+                        >
+                            <option value="" disabled>
+                                Select staff
+                            </option>
+                            {staffList.map((staff) => (
+                                <option key={staff.staffId} value={staff.staffId}>
+                                    {staff.staffId}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <button
                         type="button"
-                        className="w-full bg-green-500 text-white py-3 rounded-md hover:bg-green-600"
-                        onClick={saveBtnAction}
+                        className="w-full p-3 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                        onClick={handleSaveField}
                     >
                         Save Field
                     </button>
-                </form>
+                </div>
             </div>
         </div>
     );

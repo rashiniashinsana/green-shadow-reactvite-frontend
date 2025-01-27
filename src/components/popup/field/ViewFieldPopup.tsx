@@ -1,8 +1,7 @@
 import { useSelector } from "react-redux";
-import { dataRefactor } from "../../../util/dataRefactor.ts";
 import { useEffect, useRef, useState } from "react";
-import {Field} from "../../../models/Field.ts";
-import {RootState} from "../../../store/Store.ts";
+import { Field } from "../../../models/Field";
+import { RootState } from "../../../store/Store";
 
 interface ViewFieldPopupProps {
     targetField: Field;
@@ -15,22 +14,22 @@ const ViewFieldPopup = ({ targetField, closePopupAction }: ViewFieldPopupProps) 
     const handleLoadStaff = (id: string) => {
         const staffMember = staffSet.find((staffData) => staffData.staffId === id);
         return (
-            <>
-                <div>{staffMember ? dataRefactor(staffMember.staffId, 10) : ""}</div>
-                <div className="border-l border-black">
-                    {staffMember ? staffMember?.firstName : ""} {staffMember ? staffMember?.lastName : ""}
+            <div className="grid grid-cols-2 gap-4 border-b py-2">
+                <div>{staffMember ? staffMember.staffId : "N/A"}</div>
+                <div>
+                    {staffMember ? `${staffMember.firstName} ${staffMember.lastName}` : "N/A"}
                 </div>
-            </>
+            </div>
         );
     };
 
     const mapRef = useRef<HTMLDivElement>(null);
-    const markerRef = useRef<google.maps.Marker | null>(null); // Use a ref for the marker
+    const markerRef = useRef<google.maps.Marker | null>(null);
     const [map, setMap] = useState<google.maps.Map | null>(null);
 
     const defaultLocation = {
         lat: targetField.location.latitude,
-        lng: targetField.location.longitude
+        lng: targetField.location.longitude,
     };
 
     useEffect(() => {
@@ -41,7 +40,6 @@ const ViewFieldPopup = ({ targetField, closePopupAction }: ViewFieldPopupProps) 
             });
             setMap(googleMap);
 
-            // Initial marker
             markerRef.current = new google.maps.Marker({
                 position: defaultLocation,
                 map: googleMap,
@@ -50,76 +48,79 @@ const ViewFieldPopup = ({ targetField, closePopupAction }: ViewFieldPopupProps) 
     }, [map]);
 
     return (
-        <div
-            id="view-field-popup"
-            className="absolute inset-0 flex justify-center items-center w-full h-auto"
-        >
-            <div className="w-3/4 h-auto p-4 bg-white rounded-lg shadow-lg">
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+            <div className="w-1/2 max-w-xl bg-white p-8 rounded-lg shadow-lg relative">
                 <button
-                    className="absolute top-4 right-4 text-xl font-bold"
+                    className="absolute top-4 right-4 text-xl font-bold text-gray-500 hover:text-gray-800"
                     onClick={() => closePopupAction(targetField)}
                 >
                     X
                 </button>
-                <h2 className="mt-3 mb-3 text-2xl font-semibold">View Field</h2>
-                <div className="first-sec mb-4">
-                    <div className="mb-3">
+                <h2 className="text-center text-2xl font-bold mb-6">View Field Details</h2>
+                <div className="space-y-1">
+                    <div>
+                        <label className="block text-gray-700 font-semibold mb-1">Field Code</label>
                         <input
                             type="text"
-                            className="w-full p-2 border rounded-md bg-gray-100 text-gray-500"
                             readOnly
                             value={targetField.fieldCode}
+                            className="w-full p-2 border rounded bg-gray-100 text-gray-600"
                         />
-                        <label className="text-sm text-gray-500">Field Code</label>
                     </div>
-                    <div className="mb-3">
+                    <div>
+                        <label className="block text-gray-700 font-semibold mb-1">Field Name</label>
                         <input
                             type="text"
-                            className="w-full p-2 border rounded-md bg-gray-100 text-gray-500"
                             readOnly
                             value={targetField.fieldName}
+                            className="w-full p-2 border rounded bg-gray-100 text-gray-600"
                         />
-                        <label className="text-sm text-gray-500">Field Name</label>
                     </div>
-                    <div className="mb-3">
+                    <div>
+                        <label className="block text-gray-700 font-semibold mb-1">Field Size</label>
                         <input
                             type="text"
-                            className="w-full p-2 border rounded-md bg-gray-100 text-gray-500"
                             readOnly
                             value={targetField.fieldSize}
+                            className="w-full p-2 border rounded bg-gray-100 text-gray-600"
                         />
-                        <label className="text-sm text-gray-500">Field Size</label>
                     </div>
                 </div>
-                <div className="mb-4 flex gap-4">
+
+                <div className="my-4 flex gap-4 justify-center">
                     <img
-                        className="w-32 h-32 object-cover"
-                        src={!targetField.fieldImage1 ? "https://via.placeholder.com/150" : URL.createObjectURL(targetField.fieldImage1)}
-                        alt="Field Image 1"
+                        className="w-40 h-40 object-cover border rounded"
+                        src={
+                            targetField.fieldImage1
+                                ? URL.createObjectURL(targetField.fieldImage1)
+                                : "https://via.placeholder.com/150"
+                        }
+                        alt="Field 1"
                     />
                     <img
-                        className="w-32 h-32 object-cover"
-                        src={!targetField.fieldImage2 ? "https://via.placeholder.com/150" : URL.createObjectURL(targetField.fieldImage2)}
-                        alt="Field Image 2"
+                        className="w-40 h-40 object-cover border rounded"
+                        src={
+                            targetField.fieldImage2
+                                ? URL.createObjectURL(targetField.fieldImage2)
+                                : "https://via.placeholder.com/150"
+                        }
+                        alt="Field 2"
                     />
                 </div>
-                <div
-                    id="map"
-                    ref={mapRef}
-                    className="mt-2 mb-4"
-                    style={{ width: '100%', height: '200px' }}
-                ></div>
-                <div className="border-t border-black">
-                    <div className="grid grid-cols-2 gap-2 p-2 border-b">
-                        <div className="font-bold">Staff Id</div>
-                        <div className="font-bold">Staff Name</div>
+
+
+                <div className="mt-4">
+                    <h3 className="font-semibold text-lg mb-2">Assigned Staff</h3>
+                    <div className="grid grid-cols-2 gap-4 font-semibold text-gray-700 mb-2">
+                        <div>Staff ID</div>
+                        <div>Staff Name</div>
                     </div>
-                    <div className="p-2">
-                        {targetField.assignStaffs.map((staffId) => (
-                            <div key={staffId} className="grid grid-cols-2 gap-2 mb-2">
-                                {handleLoadStaff(staffId)}
-                            </div>
-                        ))}
+                    <div className="space-y-2">
+                        {targetField.assignStaffs.length > 0 ? (
+                            targetField.assignStaffs.map((staffId) => handleLoadStaff(staffId))
+                        ) : (
+                            <p className="text-gray-500">No staff assigned to this field.</p>
+                        )}
                     </div>
                 </div>
             </div>
