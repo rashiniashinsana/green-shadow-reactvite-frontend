@@ -1,10 +1,10 @@
-import {Field} from "../../../models/Field.ts";
-import {useEffect, useRef, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../../store/Store.ts";
-import {toast} from "react-toastify";
+import { Field } from "../../../models/Field.ts";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../store/Store.ts";
+import { toast } from "react-toastify";
 import fieldValidation from "../../../util/validation/FieldValidation.ts";
-import {updateField} from "../../../reducers/FieldSlice.tsx";
+import { updateField } from "../../../reducers/FieldSlice.tsx";
 
 interface UpdateFieldPopupProps {
     closePopupAction: (data: Field) => void;
@@ -39,12 +39,19 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
     };
 
     const loadSelectedStaff = () => {
-        console.log(selectedStaffSet.length);
         return selectedStaffSet.map((staffId) => {
             const staffMember = staff.find((staff) => staff.staffId === staffId);
-            return (<h6 data-id={staffMember?.staffId} onClick={() => {removeSelectedStaff(staffMember?.staffId as string)}}>{staffMember?.firstName} {staffMember?.lastName}</h6>)
+            return (
+                <h6
+                    key={staffMember?.staffId}
+                    data-id={staffMember?.staffId}
+                    onClick={() => removeSelectedStaff(staffMember?.staffId as string)}
+                >
+                    {staffMember?.firstName} {staffMember?.lastName}
+                </h6>
+            );
         });
-    }
+    };
 
     const handleSelectStaff = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const staffId = e.target.value;
@@ -59,14 +66,52 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
         } else {
             toast.error('Staff member not found');
         }
-    }
+    };
 
-    useEffect(() => {
-        loadSelectedStaff()
-    }, [selectedStaffSet]);
+    const removeSelectedStaff = (id: string) => {
+        const newSelectedStaffSet = selectedStaffSet.filter((staffId) => staffId !== id);
+        setSelectedStaffSet(newSelectedStaffSet);
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value, files } = e.target;
+        setField((prev) => {
+            if (files) {
+                return {
+                    ...prev,
+                    [name]: files[0] as File,
+                };
+            }
+            return {
+                ...prev,
+                [name]: value,
+            };
+        });
+    };
+
+    const handleUpdateField = () => {
+        try {
+            if (field.fieldImage1 === null && image1Ref.current?.files?.[0]) {
+                field.fieldImage1 = image1Ref.current?.files?.[0] as File;
+            }
+            if (field.fieldImage2 === null && image2Ref.current?.files?.[0]) {
+                field.fieldImage2 = image2Ref.current?.files?.[0] as File;
+            }
+            field.assignStaffs = selectedStaffSet;
+
+            if (!fieldValidation(field.fieldName, field.fieldSize, field.fieldImage1, field.fieldImage2)) {
+                toast.error('Invalid field data');
+                return;
+            }
+            dispatch(updateField(field));
+            toast.success('Field updated successfully');
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     const mapRef = useRef<HTMLDivElement>(null);
-    const markerRef = useRef<google.maps.Marker | null>(null); // Use a ref for the marker
+    const markerRef = useRef<google.maps.Marker | null>(null);
     const [map, setMap] = useState<google.maps.Map | null>(null);
 
     const defaultLocation = {
@@ -82,26 +127,22 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
             });
             setMap(googleMap);
 
-            // Initial marker
             markerRef.current = new google.maps.Marker({
                 position: defaultLocation,
                 map: googleMap,
             });
 
-            googleMap.addListener('click', (e : google.maps.MapMouseEvent) => {
+            googleMap.addListener('click', (e: google.maps.MapMouseEvent) => {
                 if (e.latLng) {
-                    // Remove previous marker
                     if (markerRef.current) {
                         markerRef.current.setMap(null);
                     }
 
-                    // Set new marker
                     markerRef.current = new google.maps.Marker({
                         position: e.latLng,
                         map: googleMap,
                     });
 
-                    // Update location in field
                     setField((prev) => ({
                         ...prev,
                         location: {
@@ -114,54 +155,9 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
         }
     }, [map]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value, files } = e.target;
-
-        setField((prev) => {
-            if (files) {
-                console.log(files[0]);
-                console.log(field.fieldImage1)
-                return {
-                    ...prev,
-                    [name]: files[0] as File, // Ensure it's cast to File
-                };
-            }
-            return {
-                ...prev,
-                [name]: value,
-            };
-        });
-    };
-
-    const handleUpdateField = () => {
-        try {
-            if (field.fieldImage1 === null) {
-                field.fieldImage1 = image1Ref.current?.files?.[0] as File;
-            }
-            if (field.fieldImage2 === null) {
-                field.fieldImage2 = image2Ref.current?.files?.[0] as File;
-            }
-            console.log(selectedStaffSet);
-            field.assignStaffs = selectedStaffSet;
-            if (!fieldValidation(field.fieldName, field.fieldSize, field.fieldImage1, field.fieldImage2)) {
-                toast.error('Invalid field data');
-                return;
-            }
-            dispatch(updateField(field));
-            toast.success('Field updated successfully');
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-    const removeSelectedStaff = (id:string) => {
-        const newSelectedStaffSet = selectedStaffSet.filter((staffId) => staffId !== id);
-        setSelectedStaffSet(newSelectedStaffSet)
-    }
     return (
-        <div className="absolute inset-0 flex justify-center items-center w-full h-auto">
-            <div className="w-1/2 h-auto p-6 bg-white rounded-lg shadow-lg relative">
-
+        <div className="absolute inset-0 flex justify-center items-center w-full h-auto bg-gray-900 bg-opacity-50">
+            <div className="w-full h-auto p-6 bg-white rounded-lg shadow-lg relative max-w-lg mx-auto">
                 <button
                     className="absolute top-4 right-4 text-xl font-bold text-gray-500 hover:text-gray-800"
                     onClick={() => closePopupAction(targetField)}
@@ -169,17 +165,11 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
                     X
                 </button>
 
-
                 <h2 className="mt-3 mb-4 text-2xl font-semibold">Update Field</h2>
 
-
                 <div className="space-y-4">
-
                     <div>
-                        <label
-                            htmlFor="fieldNameInput"
-                            className="block text-sm font-medium text-gray-700"
-                        >
+                        <label htmlFor="fieldNameInput" className="block text-sm font-medium text-gray-700">
                             Field Name
                         </label>
                         <input
@@ -187,17 +177,14 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
                             id="fieldNameInput"
                             placeholder="Field Name"
-                            defaultValue={targetField.fieldName}
+                            value={field.fieldName}
                             name="fieldName"
                             onChange={handleChange}
                         />
                     </div>
 
                     <div>
-                        <label
-                            htmlFor="fieldSizeInput"
-                            className="block text-sm font-medium text-gray-700"
-                        >
+                        <label htmlFor="fieldSizeInput" className="block text-sm font-medium text-gray-700">
                             Field Size
                         </label>
                         <input
@@ -205,18 +192,14 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
                             id="fieldSizeInput"
                             placeholder="Field Size"
-                            defaultValue={targetField.fieldSize}
+                            value={field.fieldSize}
                             name="fieldSize"
                             onChange={handleChange}
                         />
                     </div>
 
-
                     <div>
-                        <label
-                            htmlFor="image1Input"
-                            className="block text-sm font-medium text-gray-700"
-                        >
+                        <label htmlFor="image1Input" className="block text-sm font-medium text-gray-700">
                             Select Image 1
                         </label>
                         <input
@@ -231,22 +214,15 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
                             type="button"
                             className="mt-2 py-2 px-4 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
                             onClick={() =>
-                                handleSetDefaultImage(
-                                    targetField.fieldImage1 as File,
-                                    image1Ref
-                                )
+                                handleSetDefaultImage(targetField.fieldImage1 as File, image1Ref)
                             }
                         >
                             Set Old Image 1
                         </button>
                     </div>
 
-
                     <div>
-                        <label
-                            htmlFor="image2Input"
-                            className="block text-sm font-medium text-gray-700"
-                        >
+                        <label htmlFor="image2Input" className="block text-sm font-medium text-gray-700">
                             Select Image 2
                         </label>
                         <input
@@ -261,22 +237,15 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
                             type="button"
                             className="mt-2 py-2 px-4 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
                             onClick={() =>
-                                handleSetDefaultImage(
-                                    targetField.fieldImage2 as File,
-                                    image2Ref
-                                )
+                                handleSetDefaultImage(targetField.fieldImage2 as File, image2Ref)
                             }
                         >
                             Set Old Image 2
                         </button>
                     </div>
 
-                    {/* Assign Staff */}
                     <div>
-                        <label
-                            htmlFor="staffSelect"
-                            className="block text-sm font-medium text-gray-700"
-                        >
+                        <label htmlFor="staffSelect" className="block text-sm font-medium text-gray-700">
                             Select a Staff Member
                         </label>
                         <select
@@ -292,21 +261,14 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
                                 </option>
                             ))}
                         </select>
+                        {/*<div>*/}
+                        {/*    <h3 className="text-sm font-medium text-gray-700">Selected Staff</h3>*/}
+                        {/*    {loadSelectedStaff()}*/}
+                        {/*</div>*/}
                     </div>
 
-                     <div>
-                        <h3 className="text-sm font-medium text-gray-700">Selected Staff</h3>
-                        {loadSelectedStaff()}
-                    </div>
 
-
-                    <div
-                        id="map"
-                        ref={mapRef}
-                        className="w-full h-64 mt-4 border border-gray-300 rounded-md"
-                    ></div>
                 </div>
-
 
                 <button
                     type="button"
@@ -318,7 +280,6 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
             </div>
         </div>
     );
-
 };
 
 export default UpdateFieldPopup;
