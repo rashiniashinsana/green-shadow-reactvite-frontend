@@ -34,7 +34,7 @@ const FieldCard = ({fieldData, handleUpdateFieldPopup, handleDeleteField, handle
                 <div>
                     <h3 className="text-sm font-medium text-gray-500">Field Size</h3>
                     <h2 className="text-lg font-semibold text-gray-800">
-                        {fieldData.fieldSize}P
+                        {fieldData.fieldSize}
                     </h2>
                 </div>
             </div>
