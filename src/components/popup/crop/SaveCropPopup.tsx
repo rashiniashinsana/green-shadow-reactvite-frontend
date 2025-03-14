@@ -90,7 +90,6 @@ const SaveCropPopup = ({ closePopupAction }: SaveCropProps) => {
                         />
                     </div>
 
-                    {/* Crop Type */}
                     <div>
                         <input
                             type="text"

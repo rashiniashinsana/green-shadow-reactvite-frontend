@@ -70,7 +70,7 @@ const CropWall = () => {
     return (
         <>
             {saveCropPopup && <SaveCropPopup closePopupAction={handleSaveCropPopup} />}
-            {updateCropPopup && <UpdateCropPopup CloseUpdateCropPopup={handleUpdatePopup} targetCrop={targetCrop} />}
+            {updateCropPopup && <UpdateCropPopup closePopupAction={handleUpdatePopup} targetCrop={targetCrop} />}
             {viewCropPopup && <ViewCropPopup targetCrop={targetCrop} closePopupAction={handleViewCropPopup} />}
             <div className="w-100 p-5 bg-transparent" id="staff-wall">
                 <HeaderComponent section={"Crop Management"} button={"Add Crop"} addPopupAction={handleSaveCropPopup} searchAction={setSearch} />

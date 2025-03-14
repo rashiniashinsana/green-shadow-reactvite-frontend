@@ -18,11 +18,13 @@ const cropSlice  = createSlice({
     reducers: {
         saveCrop: (state, action : PayloadAction<Crop>) => {
             state.push(action.payload)
+            alert("Crop saved successfully");
         },
         deleteCrop: (state, action) => {
             // @ts-ignore
             return state.filter(crop => crop.cropCode !== action.payload);
-        },
+
+            },
         updateCrop: (state, action) => {
             const index = state.findIndex((cropItem : Crop) => cropItem.cropCode === action.payload.cropCode);
             if (index !== -1) {

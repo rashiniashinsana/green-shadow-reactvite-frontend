@@ -20,6 +20,7 @@ const fieldSlice = createSlice({
     reducers: {
         saveField: (state, action : PayloadAction<Field>) => {
             state.push(action.payload)
+            alert("Filed Saved Successfully")
         },
         updateField: (state, action : PayloadAction<Field>) => {
             return state.map((field: Field) => field.fieldCode === action.payload.fieldCode

@@ -26,7 +26,7 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
             latitude: targetField.location.latitude,
             longitude: targetField.location.longitude,
         },
-        assignStaffs: targetField.assignStaffs
+        assignStaffs: targetField.assignStaffs,
     });
     const dispatch = useDispatch();
 
@@ -38,39 +38,18 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
         }
     };
 
-    const loadSelectedStaff = () => {
-        return selectedStaffSet.map((staffId) => {
-            const staffMember = staff.find((staff) => staff.staffId === staffId);
-            return (
-                <h6
-                    key={staffMember?.staffId}
-                    data-id={staffMember?.staffId}
-                    onClick={() => removeSelectedStaff(staffMember?.staffId as string)}
-                >
-                    {staffMember?.firstName} {staffMember?.lastName}
-                </h6>
-            );
-        });
-    };
-
     const handleSelectStaff = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const staffId = e.target.value;
         const staffMember = staff.find((staff) => staff.staffId === staffId);
         if (staffMember) {
-            const isStaffSelected = selectedStaffSet.includes(staffId);
-            if (!isStaffSelected) {
+            if (!selectedStaffSet.includes(staffId)) {
                 setSelectedStaffSet([...selectedStaffSet, staffId]);
             } else {
-                toast.error('Staff member already selected');
+                toast.error("Staff member already selected");
             }
         } else {
-            toast.error('Staff member not found');
+            toast.error("Staff member not found");
         }
-    };
-
-    const removeSelectedStaff = (id: string) => {
-        const newSelectedStaffSet = selectedStaffSet.filter((staffId) => staffId !== id);
-        setSelectedStaffSet(newSelectedStaffSet);
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,13 +79,15 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
             field.assignStaffs = selectedStaffSet;
 
             if (!fieldValidation(field.fieldName, field.fieldSize, field.fieldImage1, field.fieldImage2)) {
-                toast.error('Invalid field data');
+                toast.error("Invalid field data");
                 return;
             }
             dispatch(updateField(field));
-            toast.success('Field updated successfully');
+            closePopupAction(field);
+            toast.success("Field updated successfully");
         } catch (e) {
             console.error(e);
+            toast.error("An error occurred while updating the field");
         }
     };
 
@@ -116,7 +97,7 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
 
     const defaultLocation = {
         lat: targetField.location.latitude,
-        lng: targetField.location.longitude
+        lng: targetField.location.longitude,
     };
 
     useEffect(() => {
@@ -132,7 +113,7 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
                 map: googleMap,
             });
 
-            googleMap.addListener('click', (e: google.maps.MapMouseEvent) => {
+            googleMap.addListener("click", (e: google.maps.MapMouseEvent) => {
                 if (e.latLng) {
                     if (markerRef.current) {
                         markerRef.current.setMap(null);
@@ -261,13 +242,7 @@ const UpdateFieldPopup = ({ closePopupAction, targetField }: UpdateFieldPopupPro
                                 </option>
                             ))}
                         </select>
-                        {/*<div>*/}
-                        {/*    <h3 className="text-sm font-medium text-gray-700">Selected Staff</h3>*/}
-                        {/*    {loadSelectedStaff()}*/}
-                        {/*</div>*/}
                     </div>
-
-
                 </div>
 
                 <button
