@@ -1,7 +1,6 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RootLayout } from "./components/RootLayout.tsx";
-import { Dashboard } from "./pages/Dashboard.tsx";
 import CropWall from "./components/Wall/CropWall.tsx";
 import { NotFoundPage } from "./pages/NotFoundPage.tsx";
 import StaffWall from "./components/Wall/StaffWall.tsx";
@@ -11,6 +10,7 @@ import EquipmentWall from "./components/Wall/EquipmentWall.tsx";
 import CropDataWall from "./components/Wall/CropDataWall.tsx";
 import LogInPage from "./pages/LogInPage.tsx";
 import RegisterPage from "./pages/SignUpPage.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
 
 function App() {
     const routes = createBrowserRouter([
