@@ -1,32 +1,22 @@
-import {Outlet, useLocation} from "react-router";
-import { NavbarComponent } from "./NavbarComponent.tsx";
-import {useEffect} from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import { NavbarComponent } from "./NavbarComponent";
+
 
 export function RootLayout() {
     const location = useLocation();
+    const hideNavbarPaths = ["/", "/register"];
+    const shouldHideNavbar = hideNavbarPaths.includes(location.pathname);
 
-    useEffect(() => {
-        const element = document.querySelector("body > div");
-
-        if (element && element instanceof HTMLElement) {
-            if (location.pathname === "/" || location.pathname === "/register") {
-                element.style.width = "75%";
-                element.style.height = "80%";
-            } else {
-                element.style.width = "90%";
-                element.style.height = "90%";
-            }
-        }
-    }, [location]);
 
     return (
         <>
             <div className="grid grid-cols-[250px_auto] min-h-screen">
-                <header className=''>
-                    <NavbarComponent />
-                </header>
-
-                <main className="p-3 pt-8">
+                  {!shouldHideNavbar && (
+                    <header>
+                        <NavbarComponent />
+                    </header>
+                )}
+                <main className="p-6 flex-1 overflow-y-auto">
                     <Outlet />
                 </main>
             </div>

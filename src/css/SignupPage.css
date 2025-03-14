@@ -1,27 +1,25 @@
-/* General Container */
 .signUpContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f3f4f6;
+    background-color: #a3e7cd;
 }
 
 .boxContainer {
     display: flex;
     max-width: 900px;
     width: 100%;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #d3fcdb;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     overflow: hidden;
 }
 
-/* Left Section */
 .infoSection {
     flex: 1;
     padding: 20px;
-    background-color: #d9f7be;
+    /*background-color: #d9f7be;*/
     display: flex;
     flex-direction: column;
     justify-content:  space-between;
@@ -30,15 +28,14 @@
     height: 600px;
     width: 100%;
 }
-/* Welcome Title at the top */
+
 .welcomeTitle {
     font-size: 2rem;
     font-weight: bold;
     color: #34a853;
-    margin-bottom: 10px; /* Add spacing below the title */
+    margin-bottom: 10px;
 }
 
-/* Company Name below the Welcome Title */
 .companyName {
     font-size: 1.5rem;
     font-weight: 600;
@@ -46,7 +43,6 @@
     margin-bottom: 20px; /* Space between company name and tagline */
 }
 
-/* Tagline below the Company Name */
 .tagline {
     font-size: 1rem;
     font-style: italic;
@@ -54,14 +50,13 @@
     color: #555; /* Optional: Softer text color for contrast */
 }
 
-/* Logo below the tagline (if needed) */
 .companyLogo {
     width: 100px;
     height: auto;
     margin-bottom: 20px; /* Optional: Space below the logo */
 }
 
-/* Information text (if needed) */
+
 .infoText {
     font-size: 0.9rem;
     line-height: 1.5;
@@ -69,7 +64,6 @@
     color: #333;  /* Add padding from the bottom edge */
 }
 
-/* Right Section */
 .formSection {
     flex: 1;
     padding: 20px 40px;
@@ -78,18 +72,6 @@
     justify-content: center;
 }
 
-.topButtons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.btn {
-    font-size: 0.9rem;
-    padding: 5px 10px;
-    border-radius: 4px;
-}
 
 .formTitle {
     font-size: 1.5rem;
@@ -137,13 +119,6 @@
 #checkBox-label {
     font-size: 0.9rem;
     color: #555555;
-}
-
-.btn-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
 }
 
 .signUp-btn {
