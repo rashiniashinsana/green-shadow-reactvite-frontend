@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { generateUUID } from "../../../util/generateUUID.ts";
 import { Equipment } from "../../../models/Equipment.ts";
 import validateEquipment from "../../../util/validation/EquipmentValidation.ts";
 import { saveEquipment } from "../../../reducers/EquipmentSlice.tsx";
+import { RootState } from "../../../store/Store.ts";
 
 interface AddEquipmentPopupProps {
     closePopupAction: () => void;
@@ -20,6 +21,10 @@ const SaveEquipmentPopup = ({ closePopupAction }: AddEquipmentPopupProps) => {
     });
 
     const dispatch = useDispatch();
+    const fields = useSelector((state: RootState) => state.field);
+    const staff = useSelector((state: RootState) => state.staff);
+    const equipmentTypes = ["Tractor", "Harvester", "Irrigation System", "Seeder", "Plow"];
+
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -35,9 +40,7 @@ const SaveEquipmentPopup = ({ closePopupAction }: AddEquipmentPopupProps) => {
         if (!validateEquipment(equipment.equipmentName, equipment.equipmentType)) {
             return;
         }
-        console.log(equipment);
         try {
-            console.log(equipment);
             dispatch(saveEquipment(equipment));
             toast.success("Equipment saved successfully.");
             closePopupAction();
@@ -61,45 +64,55 @@ const SaveEquipmentPopup = ({ closePopupAction }: AddEquipmentPopupProps) => {
                         <input
                             type="text"
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
-                            id="flotingInput"
-                            name={"equipmentName"}
+                            name="equipmentName"
                             placeholder="Enter Equipment Name"
                             value={equipment.equipmentName}
                             onChange={handleChange}
                         />
-                        </div>
-                    <div>
-                        <input
-                            type="text"
-                            className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
-                            id="floatingInput"
-                            name={"equipmentType"}
-                            placeholder="Enter Equipment Type"
-                            defaultValue={equipment.equipmentType}
-                            onChange={handleChange}
-                        />
                     </div>
+                    <select
+                        className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
+                        id="equipmentType"
+                        name="equipmentType"
+                        value={equipment.equipmentType}
+                        onChange={handleChange}
+                    >
+                        <option value="">Select Equipment Type</option>
+                        {equipmentTypes.map((type) => (
+                            <option key={type} value={type}>
+                                {type}
+                            </option>
+                        ))}
+                    </select>
                     <div>
-                        <input
-                            type="text"
+                        <select
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
-                            id="fieldId"
                             name="fieldId"
-                            placeholder="Enter Field ID"
                             value={equipment.fieldId}
                             onChange={handleChange}
-                        />
+                        >
+                            <option value="">Select Field ID</option>
+                            {fields.map(field => (
+                                <option key={field.fieldCode} value={field.fieldCode}>
+                                    {field.fieldCode}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div>
-                        <input
-                            type="text"
+                        <select
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
-                            id="staffId"
                             name="staffId"
-                            placeholder="Enter Staff ID"
                             value={equipment.staffId}
                             onChange={handleChange}
-                        />
+                        >
+                            <option value="">Select Staff ID</option>
+                            {staff.map(member => (
+                                <option key={member.staffId} value={member.staffId}>
+                                    {member.staffId}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <button
                         type="button"

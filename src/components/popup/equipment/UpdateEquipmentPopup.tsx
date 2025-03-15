@@ -17,6 +17,8 @@ const UpdateEquipmentPopup = ({ closePopupAction, targetEquipment }: UpdateEquip
     const equipment = useSelector((state: RootState) => state.equipment);
     const staff = useSelector((state: RootState) => state.staff);
     const field = useSelector((state: RootState) => state.field);
+    const equipmentTypes = ["Tractor", "Harvester", "Irrigation System", "Seeder", "Plow"];
+
 
     const [equipmentData, setEquipmentData] = useState<Equipment>({
         equipmentId: "",
@@ -73,7 +75,7 @@ const UpdateEquipmentPopup = ({ closePopupAction, targetEquipment }: UpdateEquip
                         </label>
                         <input
                             type="text"
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black"
                             id="floatingInput"
                             name={"equipmentName"}
                             defaultValue={equipmentData.equipmentName}
@@ -83,32 +85,37 @@ const UpdateEquipmentPopup = ({ closePopupAction, targetEquipment }: UpdateEquip
                     </div>
 
                      <div>
-                        <label htmlFor="floatingInput" className="block text-sm font-medium text-gray-700">
-                            Equipment Type
-                        </label>
-                        <input
-                            type="text"
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            id="floatingInput"
-                            name={"equipmentType"}
-                            defaultValue={equipmentData.equipmentType}
-                            onChange={handleChange}
-                            placeholder="Enter Equipment Type"
-                        />
-                    </div>
+                         <label htmlFor="floatingInput" className="block text-sm font-medium text-gray-700">
+                             Equipment Type
+                         </label>
+                         <select
+                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black"
+                             id="equipmentType"
+                             name="equipmentType"
+                             value={equipmentData.equipmentType}
+                             onChange={handleChange}
+                         >
+                             <option value="">Select Equipment Type</option>
+                             {equipmentTypes.map((type) => (
+                                 <option key={type} value={type}>
+                                     {type}
+                                 </option>
+                             ))}
+                         </select>
+                     </div>
 
                      <div>
-                        <label htmlFor="floatingSelect" className="block text-sm font-medium text-gray-700">
-                            Assign Staff
-                        </label>
-                        <select
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            id="floatingSelect"
-                            name={"staffId"}
-                            value={equipmentData.staffId}
-                            onChange={handleChange}
-                        >
-                            <option value="">None</option>
+                         <label htmlFor="floatingSelect" className="block text-sm font-medium text-gray-700">
+                             Assign Staff
+                         </label>
+                         <select
+                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black"
+                             id="floatingSelect"
+                             name={"staffId"}
+                             value={equipmentData.staffId}
+                             onChange={handleChange}
+                         >
+                         <option value="">None</option>
                             {staff.map((staff: Staff) => (
                                 <option key={staff.staffId} value={staff.staffId}>
                                     {staff.firstName} {staff.lastName}
@@ -122,7 +129,7 @@ const UpdateEquipmentPopup = ({ closePopupAction, targetEquipment }: UpdateEquip
                             Assign Field
                         </label>
                         <select
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black"
                             id="floatingSelect"
                             name={"fieldId"}
                             value={equipmentData.fieldId}
