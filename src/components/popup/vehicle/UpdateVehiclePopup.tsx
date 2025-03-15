@@ -16,6 +16,9 @@ const UpdateVehiclePopup = ({ closePopupAction, targetVehicleCode }: UpdateVehic
 
     const vehicles = useSelector((state: RootState) => state.vehicle);
     const staff = useSelector((state: RootState) => state.staff);
+    const vehicleCategories = ["Truck", "Tractor", "Van","Other"];
+    const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid"];
+    const remarksOptions = ["Operational", "Under Maintenance", "Out of Service"];
 
     const [vehicleData, setVehicleData] = useState<Vehicle>({
         licensePlateNumber: "",
@@ -50,7 +53,7 @@ const UpdateVehiclePopup = ({ closePopupAction, targetVehicleCode }: UpdateVehic
         try {
             dispatch(updateVehicle(vehicleData));
             toast.success("Vehicle updated successfully.");
-            closePopupAction("");  // Close the popup after successful update
+            closePopupAction("");
         } catch (error) {
             console.error(error);
             toast.error("Failed to update vehicle.");
@@ -60,7 +63,7 @@ const UpdateVehiclePopup = ({ closePopupAction, targetVehicleCode }: UpdateVehic
     return (
         <div className="absolute inset-0 flex justify-center items-center w-full h-auto bg-gray-800 bg-opacity-50">
             <div className="w-1/3 h-auto p-6 bg-white rounded-lg shadow-lg relative">
-                {/* Close Button */}
+
                 <button
                     className="absolute top-4 right-4 text-xl font-bold text-gray-500 hover:text-gray-800"
                     onClick={() => closePopupAction("")}
@@ -85,45 +88,69 @@ const UpdateVehiclePopup = ({ closePopupAction, targetVehicleCode }: UpdateVehic
                     </div>
 
                     <div>
-                        <label htmlFor="vehicleCategory" className="block text-sm font-medium text-gray-700">Vehicle
-                            Category</label>
-                        <input
-                            type="text"
+                        <label htmlFor="vehicleCategory" className="block text-sm font-medium text-gray-700">
+                            Vehicle Category
+                        </label>
+                        <select
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
                             id="vehicleCategory"
                             name="vehicleCategory"
                             value={vehicleData.vehicleCategory}
                             onChange={handleChange}
-                        />
+                        >
+                            <option value="">Select Category</option>
+                            {vehicleCategories.map((category) => (
+                                <option key={category} value={category}>
+                                    {category}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <div>
-                        <label htmlFor="fuelType" className="block text-sm font-medium text-gray-700">Fuel Type</label>
-                        <input
-                            type="text"
+                        <label htmlFor="fuelType" className="block text-sm font-medium text-gray-700">
+                            Fuel Type
+                        </label>
+                        <select
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
                             id="fuelType"
                             name="fuelType"
                             value={vehicleData.fuelType}
                             onChange={handleChange}
-                        />
+                        >
+                            <option value="">Select Fuel Type</option>
+                            {fuelTypes.map((fuel) => (
+                                <option key={fuel} value={fuel}>
+                                    {fuel}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <div>
-                        <label htmlFor="remarks" className="block text-sm font-medium text-gray-700">Remarks</label>
-                        <input
-                            type="text"
+                        <label htmlFor="remarks" className="block text-sm font-medium text-gray-700">
+                            Remarks
+                        </label>
+                        <select
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
                             id="remarks"
                             name="remarks"
                             value={vehicleData.remarks}
                             onChange={handleChange}
-                        />
+                        >
+                            <option value="">Select Remark</option>
+                            {remarksOptions.map((remark) => (
+                                <option key={remark} value={remark}>
+                                    {remark}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <div>
-                        <label htmlFor="assignedDriver" className="block text-sm font-medium text-gray-700">Assign
-                            Driver</label>
+                        <label htmlFor="assignedDriver" className="block text-sm font-medium text-gray-700">
+                            Assign Driver
+                        </label>
                         <select
                             className="w-full p-3 border rounded-md bg-gray-100 text-gray-600"
                             id="assignedDriver"
@@ -139,13 +166,12 @@ const UpdateVehiclePopup = ({ closePopupAction, targetVehicleCode }: UpdateVehic
                             ))}
                         </select>
                     </div>
-
                     <button
                         type="button"
                         className="w-full p-3 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
                         onClick={() => {
-                            updateAction();  // Update the vehicle
-                            closePopupAction("");  // Close the form after update
+                            updateAction();
+                            closePopupAction("");
                         }}
                     >
                         Update Vehicle
